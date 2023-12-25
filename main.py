@@ -127,7 +127,6 @@ class Lab2:
         bounds = [[np.amin(self.x1NP), np.amax(self.x1NP)], [np.amin(self.x2NP), np.amax(self.x2NP)], [np.amin(self.x3NP), np.amax(self.x3NP)]]
 
         #выбор модели
-        print(FLAG)
         if(not FLAG):
             model = sm.OLS(self.y1NP, sm.add_constant(xLinear))
             results = model.fit()
