@@ -1,6 +1,7 @@
 from random import random, randint
 
 from scipy.optimize import differential_evolution
+from scipy.optimize import linprog
 
 
 class Lab3:
@@ -41,6 +42,15 @@ class Lab3:
     flag2 = False
     flag3 = False
 
+    def function(self, arr):
+        obj1 = [-arr[0], -arr[1]]
+        lhs_ineq = [[self.J1[0], self.J2[0]], [self.J1[1], self.J2[1]], [self.J1[2], self.J2[2]]]
+        rhs_ineq = [self.amounts[0], self.amounts[1], self.amounts[2]]
+        bnd = [(0, None), (0, None)]
+        opt1 = linprog(c=obj1, A_ub=lhs_ineq, b_ub=rhs_ineq, bounds=bnd)
+        print(opt1)
+        print(opt1.ineqlin.residual)
+
     def Counting(self):
             max = self.amounts[0]
             min = self.amounts[0]
@@ -79,4 +89,5 @@ class Lab3:
 
 
 l = Lab3()
-l.Counting()
+# l.Counting()
+l.function(l.profit)
