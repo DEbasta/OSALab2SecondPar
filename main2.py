@@ -150,8 +150,14 @@ class Lab3_2:
 
 
 l1 = Lab3_1()
-XY1 = [Lab3_1.XY1[0], Lab3_1.XY1[1], Lab3_1.XY1[2]]
-XY2 = [Lab3_1.XY2[0], Lab3_1.XY2[1], Lab3_1.XY2[2]]
+XY1 = [Lab3_1.XY1[0], Lab3_1.XY1[1], Lab3_1.XY1[2], [0,0], [0,0], [0,0]]
+XY2 = [Lab3_1.XY2[0], Lab3_1.XY2[1], Lab3_1.XY2[2], [0,0], [0,0], [0,0]]
+amounts = Lab3_1.amounts
+J1 = Lab3_1.J1
+J2 = Lab3_1.J2
+profit = Lab3_1.profit
+revenue = Lab3_1.revenue
+cost = Lab3_1.cost
 
 print("Select CF (1 - 3)")
 # CF = 0
