@@ -143,10 +143,99 @@ class Lab3_1:
 class Lab3_2:
     XY1 = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
     XY2 = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
-    def __init__(self,XY1,XY2):
+    amounts = []
+    J1 = []
+    J2 = []
+    profit = []
+    revenue = []
+    cost = []
+
+    fun = [0, 0, 0]
+    XArr = [[], [], []]
+    Left = [[], [], []]
+
+    concessions = 5
+    def __init__(self, XY1, XY2, amounts, J1, J2, profit, revenue, cost):
         self.XY1 = XY1
         self.XY2 = XY2
-        print(self.XY1)
+        self.amounts = amounts
+        self.J1 = J1
+        self.J2 = J2
+        self.profit = profit
+        self.revenue = revenue
+        self.cost = cost
+
+        CF = input("Select CF (1 - 3)\n")
+        if (CF == "1"):
+            self.CF1(self.profit, [(0, None), (0, None)])
+            self.CF2(self.revenue + self.profit, [(0, None), (0, None)])
+            self.CF3(self.cost + self.profit + self.revenue, [(0, None), (0, None)])
+        elif (CF == "2"):
+            self.CF1(self.revenue, [(0, None), (0, None)])
+            self.CF2(self.profit + self.revenue, [(0, None), (0, None)])
+            self.CF3(self.cost + self.revenue + self.profit, [(0, None), (0, None)])
+        elif (CF == "3"):
+            self.CF1(self.cost, [(None, 0), (None, 0)])
+            self.CF2(self.profit + self.cost, [(0, None), (0, None)])
+            self.CF3(self.revenue + self.cost + self.profit, [(0, None), (0, None)])
+
+    def CF1(self, arr, bounds):
+        obj1 = [-arr[0], -arr[1]]
+        lhs_ineq = [[self.J1[0], self.J2[0]], [self.J1[1], self.J2[1]], [self.J1[2], self.J2[2]]]
+        rhs_ineq = [self.amounts[0], self.amounts[1], self.amounts[2]]
+        opt1 = linprog(c=obj1, A_ub=lhs_ineq, b_ub=rhs_ineq, bounds=bounds)
+        if (opt1.fun == 0):
+            self.fun[0] = opt1.fun
+        else:
+            self.fun[0] = -opt1.fun
+        self.XArr[0] = opt1.x
+        self.Left[0] = opt1.ineqlin.residual
+
+        print(self.amounts )
+        print("  ||  ||   ||")
+        print("  \/  \/   \/")
+        print(opt1.ineqlin.residual)
+
+    def CF2(self, arr, bounds):
+        obj1 = [-arr[0], -arr[1]]
+        lhs_ineq = [[self.J1[0], self.J2[0]], [self.J1[1], self.J2[1]], [self.J1[2], self.J2[2]], [arr[2], arr[3]]]
+        rhs_ineq = [self.amounts[0], self.amounts[1], self.amounts[2], self.fun[0] - (self.fun[0] / 100 * self.concessions)]
+        opt1 = linprog(c=obj1, A_ub=lhs_ineq, b_ub=rhs_ineq, bounds=bounds)
+        if (opt1.fun == 0):
+            self.fun[1] = opt1.fun
+        else:
+            self.fun[1] = -opt1.fun
+        self.XArr[1] = opt1.x
+        self.Left[1] = opt1.ineqlin.residual
+
+        print(self.amounts ," " ,self.fun[0] - (self.fun[0] / 100 * self.concessions))
+        print("  ||  ||   ||   ||")
+        print("  \/  \/   \/   \/")
+        print(opt1.ineqlin.residual)
+
+    def CF3(self, arr, bounds):
+        obj1 = [-arr[0], -arr[1]]
+        lhs_ineq = [[self.J1[0], self.J2[0]], [self.J1[1], self.J2[1]], [self.J1[2], self.J2[2]], [arr[2], arr[3]], [arr[4], arr[5]]]
+        rhs_ineq = [self.amounts[0], self.amounts[1], self.amounts[2], self.fun[0] - (self.fun[0] / 100 * self.concessions),
+                    self.fun[1] - (self.fun[1] / 100 * self.concessions)]
+        opt1 = linprog(c=obj1, A_ub=lhs_ineq, b_ub=rhs_ineq, bounds=bounds)
+        if (opt1.fun == 0):
+            self.fun[2] = opt1.fun
+        else:
+            self.fun[2] = -opt1.fun
+        self.XArr[2] = opt1.x
+        self.Left[2] = opt1.ineqlin.residual
+
+        print(self.amounts ," " ,self.fun[0] - (self.fun[0] / 100 * self.concessions), " ", self.fun[1] - (self.fun[1] / 100 * self.concessions))
+        print("  ||  ||   ||   ||")
+        print("  \/  \/   \/   \/")
+        print(opt1.ineqlin.residual)
+
+
+
+
+
+
 
 
 l1 = Lab3_1()
@@ -159,11 +248,9 @@ profit = Lab3_1.profit
 revenue = Lab3_1.revenue
 cost = Lab3_1.cost
 
-print("Select CF (1 - 3)")
-# CF = 0
-# input(CF)
-# if (CF == 1):
-#
-l2 = Lab3_2(XY1,XY2)
+
+
+
+l2 = Lab3_2(XY1, XY2, amounts, J1, J2, profit, revenue, cost)
 
 
